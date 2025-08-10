@@ -1,4 +1,5 @@
 import pygame
+import sys
 from constants import *
 from player import Player
 from asteroid import Asteroid
@@ -38,6 +39,11 @@ def main():
         
         updatable_group.update(dt) # dont need to call update on each objects since update() automatially calls on all sprites in the group
         screen.fill((0,0,0))
+
+        for ast in asteroids_group:
+            if ast.collision(player):
+                print("Game over!")
+                sys.exit(0)
 
         for obj in drawable_group:
             obj.draw(screen)
