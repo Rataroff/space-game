@@ -24,6 +24,7 @@ def main():
         
         screen.fill((0,0,0))
         player.draw(screen)
+        player.update(dt)
         pygame.display.flip() # refresh display once per frame
         dt = clock.tick(60) / 1000 # converting milliseconds to seconds (represents how much time passed between frames at 60 fps)
     
