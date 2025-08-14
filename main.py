@@ -52,7 +52,7 @@ def main():
         for ast in asteroids_group:
             for bullet in shots_group:
                 if ast.collision(bullet):
-                    ast.kill()
+                    ast.split()
                     bullet.kill()
 
         for obj in drawable_group:
