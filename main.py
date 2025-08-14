@@ -70,7 +70,7 @@ def main():
         for obj in drawable_group:
             obj.draw(screen)
 
-        score_surface = font.render(f"Score: {score}", True, (255,255,255))
+        score_surface = font.render(f"Score: {score}", True, (0,0,255))
         screen.blit(score_surface, (16,12))
 
         pygame.display.flip()  # refresh display once per frame
