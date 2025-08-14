@@ -6,19 +6,22 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 
+
 def main():
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    pygame.init() # initializes all Pygame modules (display, sound, keyboard, etc.)
+    pygame.init()  # initializes all Pygame modules (display, sound, keyboard, etc.)
+    pygame.font.init()
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    font = pygame.font.SysFont(None,28)
+
+    score = 0
 
     clock = pygame.time.Clock()
     dt = 0
-
-    
 
     updatable_group = pygame.sprite.Group()
     drawable_group = pygame.sprite.Group()
@@ -34,15 +37,17 @@ def main():
     asteroid_field = AsteroidField()
 
     Shot.containers = (shots_group, updatable_group, drawable_group)
-    
+
     while True:
-       
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        
-        updatable_group.update(dt) # dont need to call update on each objects since update() automatially calls on all sprites in the group
-        screen.fill((0,0,0))
+
+        updatable_group.update(
+            dt
+        )  # dont need to call update on each objects since update() automatially calls on all sprites in the group
+        screen.fill((0, 0, 0))
 
         for ast in asteroids_group:
             if ast.collision(player):
@@ -54,14 +59,25 @@ def main():
                 if ast.collision(bullet):
                     ast.split()
                     bullet.kill()
+                    if ast.radius >= 35:
+                        score += 1
+                    elif ast.radius >= 22:
+                        score += 2
+                    else:
+                        score += 5
+                    break
 
         for obj in drawable_group:
             obj.draw(screen)
 
-        pygame.display.flip() # refresh display once per frame
-        dt = clock.tick(60) / 1000 # converting milliseconds to seconds (represents how much time passed between frames at 60 fps)
-    
-        
+        score_surface = font.render(f"Score: {score}", True, (255,255,255))
+        screen.blit(score_surface, (16,12))
+
+        pygame.display.flip()  # refresh display once per frame
+        dt = (
+            clock.tick(60) / 1000
+        )  # converting milliseconds to seconds (represents how much time passed between frames at 60 fps)
+
 
 if __name__ == "__main__":
     main()
